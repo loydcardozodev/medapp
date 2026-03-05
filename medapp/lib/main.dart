@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:medapp/config/app_config.dart';
+import 'package:medapp/flavor/main_development.dart' as dev;
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => dev.main();
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  const MainApp({super.key, required this.config});
 
-  // This widget is the root of your application.
+  final AppConfig config;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return MaterialApp.router();
   }
 }

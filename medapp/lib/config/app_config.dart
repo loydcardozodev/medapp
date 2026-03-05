@@ -1,6 +1,6 @@
 import 'package:logging/logging.dart';
 
-enum AppFlavor { firebase }
+enum AppFlavor { firebase, development }
 
 class AppConfig {
   const AppConfig({
@@ -13,10 +13,18 @@ class AppConfig {
   final String apiBaseUrl;
   final Level logLevel;
 
+  bool get isDevelopment => flavor == AppFlavor.development;
+
   static const firebase = AppConfig(
     flavor: AppFlavor.firebase,
     apiBaseUrl: 'https://your-project.firebaseapp.com',
     logLevel: Level.INFO,
+  );
+
+  static const development = AppConfig(
+    flavor: AppFlavor.development,
+    apiBaseUrl: 'http://localhost:8080',
+    logLevel: Level.ALL,
   );
 
   // ── App Info ─────────────────────────────────────

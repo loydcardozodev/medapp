@@ -13,7 +13,9 @@ class AppConfig {
   final String apiBaseUrl;
   final Level logLevel;
 
+  // derived from flavor, no need for separate field
   bool get isDevelopment => flavor == AppFlavor.development;
+  bool get useFirebase => flavor == AppFlavor.firebase;
 
   static const firebase = AppConfig(
     flavor: AppFlavor.firebase,
@@ -33,7 +35,7 @@ class AppConfig {
 
   // ── API ──────────────────────────────────────────
   static const String baseUrl = 'https://api.example.com';
-  static const int connectTimeout = 10000; // ms
+  static const int connectTimeout = 10000;
   static const int receiveTimeout = 15000;
 
   // ── Storage Keys ─────────────────────────────────

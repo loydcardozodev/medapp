@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medapp/routing/routes.dart';
-import 'package:medapp/ui/home/view/widget/bannerWidget.dart';
-import 'package:medapp/ui/home/view/widget/doc_list.dart';
-import 'package:medapp/ui/home/view/widget/upcoming_list.dart';
+import 'package:medapp/ui/patient_screen//home/view/widget/bannerWidget.dart';
+import 'package:medapp/ui/patient_screen//home/view/widget/doc_list.dart';
+import 'package:medapp/ui/patient_screen//home/view/widget/upcoming_list.dart';
 
 List<Map<String, String>> items = [
   {

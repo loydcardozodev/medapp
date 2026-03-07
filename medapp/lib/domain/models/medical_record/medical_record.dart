@@ -4,7 +4,7 @@ part 'medical_record.freezed.dart';
 part 'medical_record.g.dart';
 
 @freezed
-class MedicalRecord with _$MedicalRecord {
+abstract class MedicalRecord with _$MedicalRecord {
   const factory MedicalRecord({
     required String id,
     required String appointmentId,

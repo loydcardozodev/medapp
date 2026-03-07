@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:medapp/data/repository/auth/auth_repository_firebase.dart';
+import 'package:medapp/data/repository/auth/auth_repository.dart';
 import 'package:medapp/util/command.dart';
 import 'package:medapp/util/result.dart';
 
 class LoginViewmodel extends ChangeNotifier {
-  final AuthRepositoryFirebase _authRepositoryFirebase;
+  final AuthRepository _authRepository;
 
-  LoginViewmodel({required AuthRepositoryFirebase authRepositoryFirebase})
-    : _authRepositoryFirebase = authRepositoryFirebase {
+  LoginViewmodel({required AuthRepository authRepository})
+    : _authRepository = authRepository {
     login = Command1<void, (String email, String password)>(_login);
   }
   bool isLoading = false;
@@ -27,9 +27,6 @@ class LoginViewmodel extends ChangeNotifier {
   Future<Result<void>> _login((String, String) credentials) async {
     final (email, password) = credentials;
 
-    return await _authRepositoryFirebase.signup(
-      email: email,
-      password: password,
-    );
+    return await _authRepository.signup(email: email, password: password);
   }
 }

@@ -3,7 +3,8 @@ import 'package:medapp/data/repository/auth/auth_repository.dart';
 import 'package:medapp/data/repository/auth/auth_repository_firebase.dart';
 import 'package:medapp/data/repository/auth/auth_repository_local.dart';
 import 'package:medapp/data/services/firebase/auth/firebase_auth_service.dart';
-import 'package:medapp/ui/signup/viewmodel/signup_viewmodel.dart';
+import 'package:medapp/ui/sharedscreens/login/viewmodel/login_viewmodel.dart';
+import 'package:medapp/ui/sharedscreens/signup/viewmodel/signup_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -27,6 +28,10 @@ List<SingleChildWidget> firebaseProviders = [
     update: (_, authRepository, __) =>
         SignupViewmodel(authRepository: authRepository),
   ),
+  ProxyProvider<AuthRepository, LoginViewmodel>(
+    update: (_, authRepository, __) =>
+        LoginViewmodel(authRepository: authRepository),
+  ),
 ];
 
 List<SingleChildWidget> localProviders = [
@@ -34,5 +39,9 @@ List<SingleChildWidget> localProviders = [
   ProxyProvider<AuthRepository, SignupViewmodel>(
     update: (_, authRepository, __) =>
         SignupViewmodel(authRepository: authRepository),
+  ),
+  ProxyProvider<AuthRepository, LoginViewmodel>(
+    update: (_, authRepository, __) =>
+        LoginViewmodel(authRepository: authRepository),
   ),
 ];

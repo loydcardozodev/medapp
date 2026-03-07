@@ -13,24 +13,23 @@ class AppConfig {
   final String apiBaseUrl;
   final Level logLevel;
 
-  // derived from flavor, no need for separate field
   bool get isDevelopment => flavor == AppFlavor.development;
   bool get useFirebase => flavor == AppFlavor.firebase;
 
   static const firebase = AppConfig(
     flavor: AppFlavor.firebase,
-    apiBaseUrl: 'https://your-project.firebaseapp.com',
+    apiBaseUrl: 'https://medapp-89efd.firebaseapp.com',
     logLevel: Level.INFO,
   );
 
   static const development = AppConfig(
     flavor: AppFlavor.development,
-    apiBaseUrl: 'http://localhost:8080',
+    apiBaseUrl: 'local',
     logLevel: Level.ALL,
   );
 
   // ── App Info ─────────────────────────────────────
-  static const String appName = 'My App';
+  static const String appName = 'medapp';
   static const String appVersion = '1.0.0';
 
   // ── API ──────────────────────────────────────────

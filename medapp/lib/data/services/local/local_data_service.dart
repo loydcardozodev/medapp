@@ -1,13 +1,19 @@
+import 'package:medapp/domain/models/app_notification/app_notification.dart';
 import 'package:medapp/domain/models/app_user/app_user.dart';
 import 'package:medapp/domain/models/appointment/appointment.dart';
 import 'package:medapp/domain/models/doctors/doctor.dart';
+import 'package:medapp/domain/models/medical_record/medical_record.dart';
+import 'package:medapp/domain/models/timeslots/timeslots.dart';
+
 import 'package:medapp/ui/core/appointment_status.dart';
 import 'package:medapp/ui/core/user_roles.dart';
 
-import '../../../domain/models/medical_record/medical_record.dart';
-
 class LocalDataService {
   LocalDataService._();
+
+  /// =========================
+  /// USERS
+  /// =========================
 
   static final List<AppUser> users = [
     const AppUser(
@@ -54,6 +60,10 @@ class LocalDataService {
     ),
   ];
 
+  /// =========================
+  /// DOCTORS
+  /// =========================
+
   static final List<Doctor> doctors = [
     const Doctor(
       id: 'd1',
@@ -92,6 +102,10 @@ class LocalDataService {
       consultationFee: 100.0,
     ),
   ];
+
+  /// =========================
+  /// APPOINTMENTS
+  /// =========================
 
   static final List<Appointment> appointments = [
     Appointment(
@@ -136,6 +150,10 @@ class LocalDataService {
     ),
   ];
 
+  /// =========================
+  /// MEDICAL RECORDS
+  /// =========================
+
   static final List<MedicalRecord> medicalRecords = [
     MedicalRecord(
       id: 'mr1',
@@ -149,6 +167,76 @@ class LocalDataService {
     ),
   ];
 
+  /// =========================
+  /// AVAILABILITY (TimeSlots)
+  /// =========================
+
+  static final List<TimeSlot> timeSlots = [
+    TimeSlot(
+      id: 'ts1',
+      doctorId: 'd1',
+      date: DateTime(2026, 3, 10),
+      time: '09:00',
+      isBooked: true,
+    ),
+    TimeSlot(
+      id: 'ts2',
+      doctorId: 'd1',
+      date: DateTime(2026, 3, 10),
+      time: '10:00',
+      isBooked: false,
+    ),
+    TimeSlot(
+      id: 'ts3',
+      doctorId: 'd2',
+      date: DateTime(2026, 3, 15),
+      time: '11:00',
+      isBooked: true,
+    ),
+    TimeSlot(
+      id: 'ts4',
+      doctorId: 'd3',
+      date: DateTime(2026, 3, 8),
+      time: '10:00',
+      isBooked: true,
+    ),
+  ];
+
+  /// =========================
+  /// NOTIFICATIONS
+  /// =========================
+
+  static final List<AppNotification> notifications = [
+    AppNotification(
+      id: 'n1',
+      userId: 'u5',
+      title: 'Appointment Confirmed',
+      message: 'Your appointment with Dr. Sarah Johnson is confirmed.',
+      isRead: false,
+      createdAt: DateTime(2026, 3, 1),
+    ),
+    AppNotification(
+      id: 'n2',
+      userId: 'u5',
+      title: 'Appointment Reminder',
+      message: 'Reminder: Appointment tomorrow at 09:00 AM.',
+      isRead: false,
+      createdAt: DateTime(2026, 3, 9),
+    ),
+    AppNotification(
+      id: 'n3',
+      userId: 'u6',
+      title: 'Appointment Completed',
+      message: 'Your appointment has been completed.',
+      isRead: true,
+      createdAt: DateTime(2026, 3, 8),
+    ),
+  ];
+
+  /// =========================
+  /// AUTH HELPERS
+  /// =========================
+
   static AppUser? findUser(String email, String password) {
     try {
       return users.firstWhere(
@@ -158,6 +246,10 @@ class LocalDataService {
       return null;
     }
   }
+
+  /// =========================
+  /// DOCTOR HELPERS
+  /// =========================
 
   static Doctor? getDoctorByUserId(String userId) {
     try {
@@ -176,12 +268,50 @@ class LocalDataService {
     }
   }
 
+  /// =========================
+  /// APPOINTMENT HELPERS
+  /// =========================
+
   static List<Appointment> getAppointmentsForCustomer(String customerId) =>
       appointments.where((a) => a.customerId == customerId).toList();
 
   static List<Appointment> getAppointmentsForDoctor(String doctorId) =>
       appointments.where((a) => a.doctorId == doctorId).toList();
 
+  /// =========================
+  /// MEDICAL RECORD HELPERS
+  /// =========================
+
   static List<MedicalRecord> getMedicalRecordsForCustomer(String customerId) =>
       medicalRecords.where((r) => r.customerId == customerId).toList();
+
+  /// =========================
+  /// AVAILABILITY HELPERS
+  /// =========================
+
+  static List<TimeSlot> getDoctorAvailability(String doctorId) =>
+      timeSlots.where((slot) => slot.doctorId == doctorId).toList();
+
+  static void addAvailability(TimeSlot slot) {
+    timeSlots.add(slot);
+  }
+
+  static void removeAvailability(String slotId) {
+    timeSlots.removeWhere((slot) => slot.id == slotId);
+  }
+
+  /// =========================
+  /// NOTIFICATION HELPERS
+  /// =========================
+
+  static List<AppNotification> getNotifications(String userId) =>
+      notifications.where((n) => n.userId == userId).toList();
+
+  static void markNotificationAsRead(String notificationId) {
+    final index = notifications.indexWhere((n) => n.id == notificationId);
+
+    if (index != -1) {
+      notifications[index] = notifications[index].copyWith(isRead: true);
+    }
+  }
 }

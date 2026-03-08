@@ -11,6 +11,8 @@ import 'package:medapp/ui/core/user_roles.dart';
 class LocalDataService {
   LocalDataService._();
 
+  static final LocalDataService instance = LocalDataService._();
+
   /// =========================
   /// USERS
   /// =========================
@@ -18,45 +20,35 @@ class LocalDataService {
   static final List<AppUser> users = [
     const AppUser(
       id: 'u1',
-      name: 'Admin',
-      email: 'admin@medapp.com',
-      password: 'admin123',
-      role: UserRole.admin,
+      email: 'patient@test.com',
+      name: 'John Smith',
+      password: '123456',
+      role: UserRole.patient,
+      isActive: true,
     ),
     const AppUser(
       id: 'u2',
+      email: 'doctor1@test.com',
       name: 'Dr. Sarah Johnson',
-      email: 'sarah@medapp.com',
-      password: 'doctor123',
+      password: '123456',
       role: UserRole.doctor,
+      isActive: true,
     ),
     const AppUser(
       id: 'u3',
+      email: 'doctor2@test.com',
       name: 'Dr. James Lee',
-      email: 'james@medapp.com',
-      password: 'doctor123',
+      password: '123456',
       role: UserRole.doctor,
+      isActive: true,
     ),
     const AppUser(
       id: 'u4',
+      email: 'doctor3@test.com',
       name: 'Dr. Maria Cruz',
-      email: 'maria@medapp.com',
-      password: 'doctor123',
+      password: '123456',
       role: UserRole.doctor,
-    ),
-    const AppUser(
-      id: 'u5',
-      name: 'John Doe',
-      email: 'john@medapp.com',
-      password: 'customer123',
-      role: UserRole.customer,
-    ),
-    const AppUser(
-      id: 'u6',
-      name: 'Jane Smith',
-      email: 'jane@medapp.com',
-      password: 'customer123',
-      role: UserRole.customer,
+      isActive: true,
     ),
   ];
 
@@ -68,6 +60,7 @@ class LocalDataService {
     const Doctor(
       id: 'd1',
       userId: 'u2',
+      name: 'Dr. Sarah Johnson',
       specialty: 'Cardiologist',
       bio: 'Board-certified cardiologist with 10+ years of experience.',
       rating: 4.8,
@@ -80,6 +73,7 @@ class LocalDataService {
     const Doctor(
       id: 'd2',
       userId: 'u3',
+      name: 'Dr. James Lee',
       specialty: 'Dermatologist',
       bio: 'Specialist in skin, hair, and nail disorders.',
       rating: 4.5,
@@ -92,6 +86,7 @@ class LocalDataService {
     const Doctor(
       id: 'd3',
       userId: 'u4',
+      name: 'Dr. Maria Cruz',
       specialty: 'Pediatrician',
       bio: 'Dedicated to comprehensive care for children.',
       rating: 4.9,
@@ -110,7 +105,7 @@ class LocalDataService {
   static final List<Appointment> appointments = [
     Appointment(
       id: 'a1',
-      customerId: 'u5',
+      customerId: 'u1',
       doctorId: 'd1',
       date: DateTime(2026, 3, 10),
       timeSlot: '09:00',
@@ -120,7 +115,7 @@ class LocalDataService {
     ),
     Appointment(
       id: 'a2',
-      customerId: 'u5',
+      customerId: 'u1',
       doctorId: 'd2',
       date: DateTime(2026, 3, 15),
       timeSlot: '11:00',
@@ -130,7 +125,7 @@ class LocalDataService {
     ),
     Appointment(
       id: 'a3',
-      customerId: 'u6',
+      customerId: 'u1',
       doctorId: 'd3',
       date: DateTime(2026, 3, 8),
       timeSlot: '10:00',
@@ -140,7 +135,7 @@ class LocalDataService {
     ),
     Appointment(
       id: 'a4',
-      customerId: 'u6',
+      customerId: 'u1',
       doctorId: 'd1',
       date: DateTime(2026, 3, 5),
       timeSlot: '14:00',

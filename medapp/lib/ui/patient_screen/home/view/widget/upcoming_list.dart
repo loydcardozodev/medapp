@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:medapp/domain/models/appointment/appointment.dart';
 import 'package:medapp/ui/core/appointment_status.dart';
 import 'package:intl/intl.dart';
+import 'package:medapp/ui/patient_screen/home/viewmodel/home_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class UpcomingList extends StatelessWidget {
   final List<Appointment> appointments;
@@ -30,6 +32,11 @@ class _AppointmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedDate = DateFormat('dd/MM/yy').format(appointment.date);
+    final viewModel = context.watch<HomeViewModel>();
+    final doctor = viewModel.doctors.firstWhere(
+      (d) => d.id == appointment.doctorId,
+      orElse: () => viewModel.doctors.first,
+    );
 
     return SizedBox(
       height: 160,
@@ -46,7 +53,7 @@ class _AppointmentCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Doctor ID: ${appointment.doctorId}',
+                          doctor.name,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -89,7 +96,17 @@ class _AppointmentCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.grey[200],
+                    child: Text(
+                      doctor.specialty[0],
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
 

@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 enum UserRole {
   admin('admin'),
   doctor('doctor'),
-  customer('customer');
+  patient('patient');
 
   const UserRole(this.value);
   final String value;

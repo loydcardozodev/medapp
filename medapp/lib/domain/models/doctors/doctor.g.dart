@@ -9,6 +9,7 @@ part of 'doctor.dart';
 _Doctor _$DoctorFromJson(Map<String, dynamic> json) => _Doctor(
   id: json['id'] as String,
   userId: json['userId'] as String,
+  name: json['name'] as String,
   specialty: json['specialty'] as String,
   bio: json['bio'] as String,
   rating: (json['rating'] as num).toDouble(),
@@ -27,6 +28,7 @@ _Doctor _$DoctorFromJson(Map<String, dynamic> json) => _Doctor(
 Map<String, dynamic> _$DoctorToJson(_Doctor instance) => <String, dynamic>{
   'id': instance.id,
   'userId': instance.userId,
+  'name': instance.name,
   'specialty': instance.specialty,
   'bio': instance.bio,
   'rating': instance.rating,

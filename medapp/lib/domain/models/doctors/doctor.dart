@@ -8,6 +8,7 @@ abstract class Doctor with _$Doctor {
   const factory Doctor({
     required String id,
     required String userId,
+    required String name,
     required String specialty,
     required String bio,
     required double rating,
@@ -16,6 +17,7 @@ abstract class Doctor with _$Doctor {
     required List<String> availableDays,
     required List<String> availableSlots,
     required double consultationFee,
+
     @Default(true) bool isActive,
   }) = _Doctor;
 

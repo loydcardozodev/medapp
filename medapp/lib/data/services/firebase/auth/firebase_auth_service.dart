@@ -16,7 +16,7 @@ class FirebaseAuthService {
       name: user.displayName ?? '',
       email: user.email ?? '',
       password: '',
-      role: UserRole.customer,
+      role: UserRole.patient,
     );
   }
 
@@ -28,7 +28,7 @@ class FirebaseAuthService {
         name: user.displayName ?? '',
         email: user.email ?? '',
         password: '',
-        role: UserRole.customer,
+        role: UserRole.patient,
       );
     });
   }

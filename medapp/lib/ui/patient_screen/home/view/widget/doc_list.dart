@@ -34,10 +34,17 @@ class DocList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  doctor.specialty,
+                  doctor.name,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  doctor.specialty,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    // fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),

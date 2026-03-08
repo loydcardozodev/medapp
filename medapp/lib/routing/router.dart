@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:medapp/data/repository/auth/auth_repository.dart';
 import 'package:medapp/domain/models/appointment/appointment.dart';
 import 'package:medapp/domain/models/app_user/app_user.dart';
+import 'package:medapp/domain/models/medical_record/medical_record.dart';
 import 'package:medapp/routing/routes.dart';
 import 'package:medapp/ui/doctor_screen/add_medical_record/view/add_medical_record.dart';
 import 'package:medapp/ui/doctor_screen/appointment_details/view/doc_appointment_detail.dart';
@@ -16,14 +16,13 @@ import 'package:medapp/ui/patient_screen/appointmentscreen/view/widget/appointme
 import 'package:medapp/ui/patient_screen/doctor_detail/view/doctor_detail.dart';
 import 'package:medapp/ui/patient_screen/doctorlist/view/widget/doctors_list.dart';
 import 'package:medapp/ui/patient_screen/home/view/homepage.dart';
-import 'package:medapp/ui/patient_screen/medical_record_screen/view/medical_record.dart';
 import 'package:medapp/ui/patient_screen/medical_record_detail/view/medical_record_detail.dart';
 import 'package:medapp/ui/sharedscreens/edit_profile_screen/view/edit_profile_screen.dart';
 import 'package:medapp/ui/sharedscreens/login/view/loginscreen.dart';
 import 'package:medapp/ui/sharedscreens/profile_screen/view/profile_screen.dart';
 import 'package:medapp/ui/sharedscreens/signup/view/signupscreen.dart';
 import 'package:medapp/ui/sharedscreens/splashscreen/view/splashscreen.dart';
-import 'package:provider/provider.dart';
+import '../ui/patient_screen/medical_record_screen/view/medical_record_screen.dart';
 
 GoRouter router = GoRouter(
   initialLocation: Routes.splash,
@@ -88,7 +87,7 @@ GoRouter router = GoRouter(
 
     GoRoute(
       path: Routes.medicalRecord,
-      builder: (context, state) => const MedicalRecord(),
+      builder: (context, state) => MedicalRecordView(),
     ),
     GoRoute(
       path: Routes.medicalRecordDetail,

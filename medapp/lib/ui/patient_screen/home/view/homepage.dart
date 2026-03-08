@@ -5,6 +5,7 @@ import 'package:medapp/ui/patient_screen/home/view/widget/bannerWidget.dart';
 import 'package:medapp/ui/patient_screen/home/view/widget/doc_list.dart';
 import 'package:medapp/ui/patient_screen/home/view/widget/upcoming_list.dart';
 import 'package:medapp/ui/patient_screen/home/viewmodel/home_viewmodel.dart';
+import 'package:medapp/ui/patient_screen/medical_record_screen/view/widget/medical_record_card.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<HomeViewModel>().loadHome.execute();
     });
@@ -77,6 +79,7 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 10),
 
+                    /// TODAY'S APPOINTMENTS
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -113,6 +116,49 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 10),
 
+                    /// MEDICAL RECORDS
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Medical Records',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => context.push(Routes.medicalRecord),
+                          child: const Text(
+                            'See more',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    if (viewModel.records.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          'No medical records',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: viewModel.records.length,
+                        itemBuilder: (context, index) {
+                          final record = viewModel.records[index];
+                          return MedicalRecordCard(record: record);
+                        },
+                      ),
+
+                    const SizedBox(height: 10),
+
+                    /// DOCTORS
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

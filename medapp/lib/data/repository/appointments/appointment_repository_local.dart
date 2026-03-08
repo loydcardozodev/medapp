@@ -33,7 +33,6 @@ class AppointmentRepositoryLocal extends AppointmentRepository {
   Future<Result<void>> createAppointment(Appointment appointment) async {
     try {
       LocalDataService.appointments.add(appointment);
-      notifyListeners();
       return Result.ok(null);
     } catch (e) {
       return Result.error(Exception('Failed to create appointment'));
@@ -46,20 +45,13 @@ class AppointmentRepositoryLocal extends AppointmentRepository {
       final index = LocalDataService.appointments.indexWhere(
         (a) => a.id == appointmentId,
       );
+      if (index == -1) return Result.error(Exception('Appointment not found'));
 
-      if (index == -1) {
-        return Result.error(Exception('Appointment not found'));
-      }
+      LocalDataService.appointments[index] = LocalDataService
+          .appointments[index]
+          .copyWith(status: AppointmentStatus.cancelled);
 
-      final appointment = LocalDataService.appointments[index];
-
-      LocalDataService.appointments[index] = appointment.copyWith(
-        status: AppointmentStatus.cancelled,
-      );
-
-      notifyListeners();
-
-      return Result.ok(null);
+      return Result.ok(null); // removed notifyListeners()
     } catch (e) {
       return Result.error(Exception('Cancel failed'));
     }

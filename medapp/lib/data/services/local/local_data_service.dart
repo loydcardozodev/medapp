@@ -278,6 +278,19 @@ class LocalDataService {
   static List<Appointment> getAppointmentsForDoctor(String doctorId) =>
       appointments.where((a) => a.doctorId == doctorId).toList();
 
+  static List<Appointment> getUpcomingAppointmentsForCustomer(
+    String customerId,
+  ) =>
+      appointments
+          .where(
+            (a) =>
+                a.customerId == customerId &&
+                a.date.isAfter(DateTime.now()) &&
+                a.status != AppointmentStatus.cancelled,
+          )
+          .toList()
+        ..sort((a, b) => a.date.compareTo(b.date));
+
   /// =========================
   /// MEDICAL RECORD HELPERS
   /// =========================

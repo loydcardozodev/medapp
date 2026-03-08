@@ -4,7 +4,7 @@ import 'package:medapp/domain/models/app_user/app_user.dart';
 import 'package:medapp/util/result.dart';
 
 class AuthRepositoryLocal extends AuthRepository {
-  AppUser? _currentUser;
+  AppUser? _currentUser = LocalDataService.users.first;
 
   @override
   AppUser? get currentUser => _currentUser;
@@ -20,8 +20,7 @@ class AuthRepositoryLocal extends AuthRepository {
         return Result.error(Exception('Invalid email or password'));
       }
       _currentUser = user;
-      notifyListeners();
-      return Result.ok(user); // ← return user not null
+      return Result.ok(user);
     } catch (e) {
       return Result.error(Exception('Something went wrong'));
     }
@@ -39,7 +38,6 @@ class AuthRepositoryLocal extends AuthRepository {
   Future<Result<void>> logout() async {
     try {
       _currentUser = null;
-      notifyListeners();
       return Result.ok(null);
     } catch (e) {
       return Result.error(Exception('Logout failed'));

@@ -8,7 +8,6 @@ class FirebaseAuthService {
   FirebaseAuthService({firebase.FirebaseAuth? auth})
     : _auth = auth ?? firebase.FirebaseAuth.instance;
 
-  // returns AppUser? not Firebase User?
   AppUser? get currentUser {
     final user = _auth.currentUser;
     if (user == null) return null;
@@ -21,7 +20,6 @@ class FirebaseAuthService {
     );
   }
 
-  // returns Stream<AppUser?> not Stream<Firebase User?>
   Stream<AppUser?> get authStateChanges {
     return _auth.authStateChanges().map((user) {
       if (user == null) return null;

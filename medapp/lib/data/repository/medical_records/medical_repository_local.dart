@@ -9,10 +9,10 @@ class MedicalRecordRepositoryLocal extends MedicalRecordRepository {
     String customerId,
   ) async {
     try {
-      final records = LocalDataService.getMedicalRecordsForCustomer(customerId);
-      return Result.ok(records);
+      final data = LocalDataService.getMedicalRecordsForCustomer(customerId);
+      return Result.ok(data);
     } catch (e) {
-      return Result.error(Exception('Failed to load records'));
+      return Result.error(Exception('Failed to load medical records'));
     }
   }
 
@@ -20,7 +20,6 @@ class MedicalRecordRepositoryLocal extends MedicalRecordRepository {
   Future<Result<void>> addRecord(MedicalRecord record) async {
     try {
       LocalDataService.medicalRecords.add(record);
-      notifyListeners();
       return Result.ok(null);
     } catch (e) {
       return Result.error(Exception('Failed to add record'));

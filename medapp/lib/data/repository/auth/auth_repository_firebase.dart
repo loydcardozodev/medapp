@@ -9,9 +9,7 @@ class AuthRepositoryFirebase extends AuthRepository {
 
   AuthRepositoryFirebase({required FirebaseAuthService firebaseAuthService})
     : _firebaseAuthService = firebaseAuthService {
-    _firebaseAuthService.authStateChanges.listen((_) {
-      notifyListeners();
-    });
+    _firebaseAuthService.authStateChanges.listen((_) {});
   }
 
   @override

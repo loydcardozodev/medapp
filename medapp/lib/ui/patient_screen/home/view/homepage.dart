@@ -1,27 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medapp/routing/routes.dart';
-import 'package:medapp/ui/patient_screen//home/view/widget/bannerWidget.dart';
-import 'package:medapp/ui/patient_screen//home/view/widget/doc_list.dart';
-import 'package:medapp/ui/patient_screen//home/view/widget/upcoming_list.dart';
-
-List<Map<String, String>> items = [
-  {
-    "name": "Dr. John Doe",
-    "type": "Cardiologist",
-    "image": "https://i.pravatar.cc/150?img=1",
-  },
-  {
-    "name": "Dr. Smith",
-    "type": "Dentist",
-    "image": "https://i.pravatar.cc/150?img=2",
-  },
-  {
-    "name": "Dr. Alex",
-    "type": "Neurologist",
-    "image": "https://i.pravatar.cc/150?img=3",
-  },
-];
+import 'package:medapp/ui/patient_screen/home/view/widget/bannerWidget.dart';
+import 'package:medapp/ui/patient_screen/home/view/widget/doc_list.dart';
+import 'package:medapp/ui/patient_screen/home/view/widget/upcoming_list.dart';
+import 'package:medapp/ui/patient_screen/home/viewmodel/home_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,112 +15,148 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeViewModel>().loadHome.execute();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<HomeViewModel>();
+
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              Center(
-                child: Text(
-                  'Schedule your next medical appointment',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 10),
-
-              TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search',
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                ),
-              ),
-
-              SizedBox(height: 10),
-
-              BannerWidget(),
-
-              SizedBox(height: 10),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Today's reminder",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-
-                  TextButton(
-                    onPressed: () {
-                      context.push(Routes.appointmentscreen);
-                    },
-                    child: Text(
-                      'See more',
+      appBar: AppBar(title: const Text('Home')),
+      body: viewModel.loadHome.running
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Schedule your next medical appointment',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+                        letterSpacing: 1,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    TextField(
+                      controller: _searchController,
+                      onChanged: (query) =>
+                          viewModel.searchDoctors.execute(query),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[300],
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: 'Search by specialty',
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
 
-              UpcomingList(),
+                    const SizedBox(height: 10),
 
-              SizedBox(height: 10),
+                    const BannerWidget(),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Doctors",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+                    const SizedBox(height: 10),
 
-                  TextButton(
-                    onPressed: () {
-                      context.push(Routes.doctorList);
-                    },
-                    child: Text(
-                      'See more',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Today's Appointments",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () =>
+                              context.push(Routes.appointmentscreen),
+                          child: const Text(
+                            'See more',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
 
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return DocList(
-                    name: items[index]["name"]!,
-                    type: items[index]["type"]!,
-                    image: items[index]["image"]!,
-                  );
-                },
+                    if (viewModel.upcomingAppointments.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          'No upcoming appointments',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    else
+                      UpcomingList(
+                        appointments: viewModel.upcomingAppointments,
+                      ),
+
+                    const SizedBox(height: 10),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Doctors',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => context.push(Routes.doctorList),
+                          child: const Text(
+                            'See more',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    if (viewModel.filteredDoctors.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          'No doctors found',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: viewModel.filteredDoctors.length,
+                        itemBuilder: (context, index) {
+                          final doctor = viewModel.filteredDoctors[index];
+                          return DocList(doctor: doctor);
+                        },
+                      ),
+
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

@@ -1,4 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:medapp/data/repository/auth/auth_repository.dart';
+import 'package:medapp/domain/models/appointment/appointment.dart';
+import 'package:medapp/domain/models/app_user/app_user.dart';
 import 'package:medapp/routing/routes.dart';
 import 'package:medapp/ui/doctor_screen/add_medical_record/view/add_medical_record.dart';
 import 'package:medapp/ui/doctor_screen/appointment_details/view/doc_appointment_detail.dart';
@@ -29,43 +32,46 @@ GoRouter router = GoRouter(
       path: Routes.splash,
       builder: (context, state) => const Splashscreen(),
     ),
-
     GoRoute(
       path: Routes.signup,
-      builder: (context, state) => Signupscreen(
-        // viewmodel: context.read<SignupViewmodel>(),
-      ),
+      builder: (context, state) => const Signupscreen(),
     ),
-
     GoRoute(
       path: Routes.login,
       builder: (context, state) => const Loginscreen(),
     ),
-
     GoRoute(
       path: Routes.profile,
       builder: (context, state) => const ProfileScreen(),
     ),
-
     GoRoute(
       path: Routes.editProfile,
       builder: (context, state) => const EditProfileScreen(),
     ),
-
     GoRoute(path: Routes.home, builder: (context, state) => const HomePage()),
+
     GoRoute(
       path: Routes.appointmentscreen,
-      builder: (context, state) => const AppointmentScreen(),
+      builder: (context, state) =>
+          AppointmentScreen(currentUser: state.extra as AppUser?),
     ),
 
+    // context.go(Routes.appointmentDetail, extra: appointment)
     GoRoute(
       path: Routes.appointmentDetail,
-      builder: (context, state) => const AppointmentDetail(),
+      builder: (context, state) =>
+          AppointmentDetail(appointment: state.extra as Appointment),
     ),
 
     GoRoute(
       path: Routes.appointmentBooking,
-      builder: (context, state) => const AppointmentBooking(),
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        return AppointmentBooking(
+          doctorId: args['doctorId'] as String,
+          currentUser: args['currentUser'] as AppUser,
+        );
+      },
     ),
 
     GoRoute(
@@ -73,51 +79,46 @@ GoRouter router = GoRouter(
       builder: (context, state) => const DoctorsList(),
     ),
 
+    // context.go(Routes.doctorDetail, extra: doctorId)
     GoRoute(
       path: Routes.doctorDetail,
-      builder: (context, state) => const DoctorDetail(),
+      builder: (context, state) =>
+          DoctorDetail(doctorId: state.extra as String),
     ),
 
     GoRoute(
       path: Routes.medicalRecord,
       builder: (context, state) => const MedicalRecord(),
     ),
-
     GoRoute(
       path: Routes.medicalRecordDetail,
-      builder: (context, state) => const MedicalRecordDetail(),
+      builder: (context, state) =>
+          MedicalRecordDetail(record: state.extra as MedicalRecord),
     ),
-
     GoRoute(
       path: Routes.addMedicalRecord,
       builder: (context, state) => const AddMedicalRecord(),
     ),
-
     GoRoute(
       path: Routes.docAppointmentDetails,
       builder: (context, state) => const DocAppointmentDetail(),
     ),
-
     GoRoute(
       path: Routes.doctorDashboard,
       builder: (context, state) => const DocDashboard(),
     ),
-
     GoRoute(
       path: Routes.doctorAppointment,
       builder: (context, state) => const DocAppointment(),
     ),
-
     GoRoute(
-      path: Routes.doctorDashboard,
+      path: Routes.manageAvailability,
       builder: (context, state) => const ManageAvailability(),
     ),
-
     GoRoute(
       path: Routes.patientList,
       builder: (context, state) => const PatientList(),
     ),
-
     GoRoute(
       path: Routes.patientDetail,
       builder: (context, state) => const PatientDetail(),

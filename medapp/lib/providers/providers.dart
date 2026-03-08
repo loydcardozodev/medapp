@@ -17,6 +17,7 @@ import 'package:medapp/ui/patient_screen/doctor_detail/viewmodel/doctor_detail_v
 import 'package:medapp/ui/patient_screen/doctorlist/viewmodel/doctor_list_viewmodel.dart';
 import 'package:medapp/ui/patient_screen/home/viewmodel/home_viewmodel.dart';
 import 'package:medapp/ui/patient_screen/medical_record_screen/viewmodel/medical_record_viewmodel.dart';
+import 'package:medapp/ui/sharedscreens/auth/viewmodel/auth_viewmodel.dart';
 
 import 'package:medapp/ui/sharedscreens/login/viewmodel/login_viewmodel.dart';
 import 'package:medapp/ui/sharedscreens/signup/viewmodel/signup_viewmodel.dart';
@@ -43,6 +44,11 @@ List<SingleChildWidget> firebaseProviders = [
 
   Provider<MedicalRecordRepository>(
     create: (_) => MedicalRecordRepositoryLocal(),
+  ),
+
+  ChangeNotifierProvider(
+    create: (context) =>
+        AuthViewModel(authRepository: context.read<AuthRepository>()),
   ),
 
   ChangeNotifierProvider(
@@ -124,6 +130,11 @@ List<SingleChildWidget> localProviders = [
   ChangeNotifierProvider(
     create: (context) =>
         LoginViewmodel(authRepository: context.read<AuthRepository>()),
+  ),
+
+  ChangeNotifierProvider(
+    create: (context) =>
+        AuthViewModel(authRepository: context.read<AuthRepository>()),
   ),
 
   ChangeNotifierProvider(

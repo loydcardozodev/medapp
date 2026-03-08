@@ -3,6 +3,7 @@ import 'package:medapp/domain/models/appointment/appointment.dart';
 import 'package:medapp/domain/models/app_user/app_user.dart';
 import 'package:medapp/domain/models/medical_record/medical_record.dart';
 import 'package:medapp/routing/routes.dart';
+import 'package:medapp/ui/core/user_roles.dart';
 import 'package:medapp/ui/doctor_screen/add_medical_record/view/add_medical_record.dart';
 import 'package:medapp/ui/doctor_screen/appointment_details/view/doc_appointment_detail.dart';
 import 'package:medapp/ui/doctor_screen/appointments/view/doc_appointment.dart';
@@ -17,15 +18,44 @@ import 'package:medapp/ui/patient_screen/doctor_detail/view/doctor_detail.dart';
 import 'package:medapp/ui/patient_screen/doctorlist/view/widget/doctors_list.dart';
 import 'package:medapp/ui/patient_screen/home/view/homepage.dart';
 import 'package:medapp/ui/patient_screen/medical_record_detail/view/medical_record_detail.dart';
+import 'package:medapp/ui/sharedscreens/auth/viewmodel/auth_viewmodel.dart';
 import 'package:medapp/ui/sharedscreens/edit_profile_screen/view/edit_profile_screen.dart';
 import 'package:medapp/ui/sharedscreens/login/view/loginscreen.dart';
 import 'package:medapp/ui/sharedscreens/profile_screen/view/profile_screen.dart';
 import 'package:medapp/ui/sharedscreens/signup/view/signupscreen.dart';
 import 'package:medapp/ui/sharedscreens/splashscreen/view/splashscreen.dart';
+import 'package:provider/provider.dart';
 import '../ui/patient_screen/medical_record_screen/view/medical_record_screen.dart';
 
 GoRouter router = GoRouter(
   initialLocation: Routes.splash,
+  redirect: (context, state) {
+    final auth = Provider.of<AuthViewModel>(context, listen: false);
+    final user = auth.currentUser;
+
+    final loggingIn =
+        state.matchedLocation == Routes.login ||
+        state.matchedLocation == Routes.signup;
+
+    if (user == null) {
+      return loggingIn ? null : Routes.login;
+    }
+
+    if (user.role == UserRole.doctor) {
+      if (state.matchedLocation == Routes.home) {
+        return Routes.doctorDashboard;
+      }
+    }
+
+    if (user.role == UserRole.patient) {
+      if (state.matchedLocation == Routes.doctorDashboard) {
+        return Routes.home;
+      }
+    }
+
+    return null;
+  },
+
   routes: [
     GoRoute(
       path: Routes.splash,

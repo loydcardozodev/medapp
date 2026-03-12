@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:medapp/domain/models/appointment/appointment.dart';
 import 'package:medapp/util/result.dart';
 

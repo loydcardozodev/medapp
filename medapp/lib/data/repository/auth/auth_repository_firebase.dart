@@ -13,7 +13,7 @@ class AuthRepositoryFirebase extends AuthRepository {
   }
 
   @override
-  AppUser? get currentUser => _firebaseAuthService.currentUser; // ← use service
+  AppUser? get currentUser => _firebaseAuthService.currentUser;
 
   @override
   Future<Result<AppUser>> login({
